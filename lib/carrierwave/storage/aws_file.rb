@@ -45,9 +45,7 @@ module CarrierWave
       end
 
       def store(new_file)
-        @file = bucket.objects[path].write(uploader_write_options(new_file))
-
-        true
+        file.upload_file(new_file.path, uploader_write_options(new_file))
       end
 
       def to_file
@@ -63,7 +61,7 @@ module CarrierWave
       end
 
       def authenticated_url(options = {})
-        file.url_for(:read, { expires: uploader.aws_authenticated_url_expiration }.merge(options)).to_s
+        file.presigned_url(:get, { expires_in: uploader.aws_authenticated_url_expiration }.merge(options)).to_s
       end
 
       def public_url
@@ -75,7 +73,7 @@ module CarrierWave
       end
 
       def copy_to(new_path)
-        file.copy_to(bucket.objects[new_path], uploader_copy_options)
+        bucket.object(new_path).copy_from(copy_source: file, uploader_copy_options)
       end
 
       def uploader_read_options
@@ -88,7 +86,6 @@ module CarrierWave
 
         { acl:          uploader.aws_acl,
           content_type: new_file.content_type,
-          file:         new_file.path
         }.merge(aws_attributes).merge(aws_write_options)
       end
 
@@ -103,13 +100,16 @@ module CarrierWave
       end
 
       private
+      def resource
+        Aws::S3::Resource.new(client: connection)
+      end
 
       def bucket
-        @bucket ||= connection.buckets[uploader.aws_bucket]
+        @bucket ||= resource.bucket(uploader.aws_bucket)
       end
 
       def file
-        @file ||= bucket.objects[path]
+        @file ||= bucket.object(path)
       end
     end
   end
