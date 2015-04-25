@@ -73,7 +73,7 @@ module CarrierWave
       end
 
       def copy_to(new_path)
-        bucket.object(new_path).copy_from(copy_source: file, uploader_copy_options)
+        bucket.object(new_path).copy_from(uploader_copy_options.merge(copy_source: file))
       end
 
       def uploader_read_options
