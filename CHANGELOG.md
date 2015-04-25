@@ -1,3 +1,7 @@
+## Version 0.6.0 2015-04-25
+
+* Change: Update to use the new AWS sdk (`aws-sdk ~> 2.0`)
+
 ## Version 0.5.0 2015-01-31
 
 * Change: Nudge the expected AWS-SDK version.
