@@ -10,7 +10,7 @@ describe CarrierWave::Storage::AWSFile do
   let(:uploader) do
     double(:uploader,
       aws_bucket: 'example-com',
-      aws_acl: :public_read,
+      aws_acl: 'public-read',
       aws_attributes: {},
       asset_host: nil,
       aws_read_options: { encryption_key: 'abc' },
@@ -37,11 +37,10 @@ describe CarrierWave::Storage::AWSFile do
   end
 
   describe '#uploader_write_options' do
-    it 'includes acl, content_type, file, aws_attributes, and aws_write_options' do
+    it 'includes acl, content_type, aws_attributes, and aws_write_options' do
       expect(aws_file.uploader_write_options(file)).to eq(
-        acl:            :public_read,
+        acl:            'public-read',
         content_type:   'content/type',
-        file:           '/file/path',
         encryption_key: 'def'
       )
     end

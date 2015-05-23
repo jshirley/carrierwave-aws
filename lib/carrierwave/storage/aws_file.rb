@@ -37,7 +37,7 @@ module CarrierWave
       end
 
       def read
-        file.read(uploader_read_options)
+        file.get(uploader_read_options)[:body]
       end
 
       def size
@@ -53,7 +53,7 @@ module CarrierWave
       end
 
       def url(options = {})
-        if uploader.aws_acl != :public_read
+        if uploader.aws_acl != 'public-read'
           authenticated_url(options)
         else
           public_url

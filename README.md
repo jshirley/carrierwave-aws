@@ -38,7 +38,7 @@ the use of `aws_bucket` instead of `fog_directory`, and `aws_acl` instead of
 CarrierWave.configure do |config|
   config.storage    = :aws
   config.aws_bucket = ENV.fetch('S3_BUCKET_NAME')
-  config.aws_acl    = :public_read
+  config.aws_acl    = 'public_read'
   config.asset_host = 'http://example.com'
   config.aws_authenticated_url_expiration = 60 * 60 * 24 * 365
 

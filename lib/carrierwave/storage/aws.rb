@@ -1,3 +1,5 @@
+require 'aws-sdk'
+
 module CarrierWave
   module Storage
     class AWS < Abstract
